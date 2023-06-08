@@ -8,13 +8,13 @@ route_hash = Blueprint('hash', __name__)
 
 
 @route_hash.route('/', methods=['POST'])
-def get_hi(request):
+def hash_text():
 
     text = json.loads(request.get_data()).get('text')
 
     text_bytes = text.encode("ascii")
     text_based_bytes = base64.b64encode(text_bytes)
-    body = { "encoded": text_Based_bytes.decode("ascii") }
+    body = { "encoded": text_based_bytes.decode("ascii") }
     
     return Response(
         json.dumps(body),
