@@ -13,8 +13,6 @@ services:
 
   nginx-cache1:
     image: nginx:latest
-    ports:
-      - 8001:80
     depends_on:
       - dockerized-api
     links:
@@ -24,8 +22,6 @@ services:
 
   nginx-cache2:
     image: nginx:latest
-    ports:
-      - 8002:80
     depends_on:
       - dockerized-api
     links:
@@ -33,21 +29,15 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
 
-  # haproxy:
-  #   image: haproxy:latest
-  #   ports:
-  #     - 80:80
-  #   volumes:
-  #     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-  #   depends_on:
-  #     - nginx1
-  #     - nginx2
-
-  # nginx2:
-  #   image: nginx:latest
-  #   ports:
-  #     - 6002:80
-  #   depends_on:
-  #     - dockerized-api
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  haproxy:
+    image: haproxy:latest
+    ports:
+      - 8000:80
+    links:
+      - nginx-cache1
+      - nginx-cache2
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - nginx-cache1
+      - nginx-cache2
