@@ -7,12 +7,9 @@ from flask_api import status as http_status
 route_hash = Blueprint('hash', __name__)
 
 
-@route_hash.route('/', methods=['POST'])
-def hash_text():
-
-    text = json.loads(request.get_data()).get('text')
-
-    text_bytes = text.encode("ascii")
+@route_hash.route('/<item_id>', methods=['GET'])
+def hash_text(item_id):
+    text_bytes = item_id.encode("ascii")
     text_based_bytes = base64.b64encode(text_bytes)
     body = { "encoded": text_based_bytes.decode("ascii") }
     
